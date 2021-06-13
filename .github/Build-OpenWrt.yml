@@ -1,4 +1,0 @@
-name: Build-OpenWrt
-on:
-  schedule:
-    - cron:  '0 8 * * *'
