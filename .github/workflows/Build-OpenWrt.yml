@@ -1,9 +1,9 @@
 name: Build-OpenWrt
 
 on:
-  push:
-    branches:
-      - OpenWrt
+  #push:
+  #  branches:
+  #    - OpenWrt
   schedule:
     - cron:  '0 8 * * *'
 

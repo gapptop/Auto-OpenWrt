@@ -1,0 +1,11 @@
+on:
+  push:
+    branches:
+      - OpenWrt
+jobs:
+  Self:
+    name: test
+    runs-on: ubuntu-latest
+    steps: 
+      - name: test
+        run: du -h
