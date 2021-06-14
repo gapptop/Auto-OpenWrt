@@ -27,15 +27,15 @@ jobs:
         run: |
           cp -f ./Auto-Build/.config ./lede/
           cp -f ./Auto-Build/feeds.conf.default ./lede/
-      - name: Create Config
-        run: |
-          cd ./lede
-          make defconfig
       - name: Update Feeds
         run: |
           cd ./lede
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+      - name: Create Config
+        run: |
+          cd ./lede
+          make defconfig
       - name: Make Download
         run: |
           cd ./lede
