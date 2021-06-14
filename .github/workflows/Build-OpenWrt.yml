@@ -47,7 +47,6 @@ jobs:
           make V=s
       - name: Upload
         uses: actions/upload-artifact@v2
-          uses: actions/upload-artifact@v2
-          with:
-            name: OpenWrt
-            path: ./lede/bin
+        with:
+          name: OpenWrt
+          path: ./lede/bin
