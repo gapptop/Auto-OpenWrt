@@ -1,4 +1,13 @@
 name: Build-OpenWrt
+
 on:
   schedule:
     - cron:  '0 8 * * *'
+
+jobs:
+  Self:
+    name: Build Self OpenWrt
+    runs-on: ubuntu-latest
+    steps: 
+      name: Clone Repositories
+      run: sudo apt update -y
