@@ -1,16 +1,16 @@
 name: Build-OpenWrt
 
 on:
-  #push:
-  #  branches:
-  #    - OpenWrt
+  push:
+    branches:
+      - OpenWrt
   schedule:
     - cron:  '0 8 * * *'
 
 jobs:
   Self:
     name: Build Self OpenWrt
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps: 
       - name: Update Package
         run: |
