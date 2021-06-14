@@ -9,5 +9,5 @@ jobs:
     name: Build Self OpenWrt
     runs-on: ubuntu-latest
     steps: 
-      name: Clone Repositories
-      run: sudo apt update -y
+      - name: Clone Repositories
+        run: sudo apt update -y
