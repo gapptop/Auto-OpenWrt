@@ -9,10 +9,6 @@ jobs:
   Self:
     name: test
     runs-on: ubuntu-18.04
-    steps: 
-      - name: test
-        run: |
-          sudo df -h
-          sudo fdisk -l
-          sudo ls /root
-          sudo ls /mnt
+    steps:
+      - name: Setup Debug Session
+        uses: csexton/debugger-action@master
