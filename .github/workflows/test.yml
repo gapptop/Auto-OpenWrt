@@ -1,0 +1,16 @@
+name: test
+
+on:
+  push:
+    branches:
+      - OpenWrt
+
+jobs:
+  Self:
+    name: test
+    runs-on: ubuntu-18.04
+    steps: 
+      - name: test
+        run: |
+          df -h
+          fdisk -l
