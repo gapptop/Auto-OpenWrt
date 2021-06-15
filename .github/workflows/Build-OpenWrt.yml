@@ -51,11 +51,12 @@ jobs:
         run: |
           cd ./lede
           make -j$(($(nproc) + 1)) V=s
-      - name: Upload
+      - name: Upload OpenWrt
         uses: actions/upload-artifact@v2
         with:
           name: OpenWrt
           path: ./lede/bin
+      - name: Upload Config
         with:
           name: Config
           path: ./lede/.config
