@@ -57,6 +57,7 @@ jobs:
           name: OpenWrt
           path: ./lede/bin
       - name: Upload Config
+        uses: actions/upload-artifact@v2
         with:
           name: Config
           path: ./lede/.config
