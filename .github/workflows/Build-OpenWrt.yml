@@ -12,6 +12,9 @@ jobs:
     name: Build Self OpenWrt
     runs-on: ubuntu-18.04
     steps: 
+      - name: Check Space
+        run: |
+          df -h
       - name: Update Package
         run: |
           sudo apt-get update -y
@@ -41,6 +44,9 @@ jobs:
           cd ./lede
           make download -j8 V=s
           find ./dl/ -size -1024c -exec rm -f {} \;
+      - name: Check Space
+        run: |
+          df -h
       - name: Build
         run: |
           cd ./lede
@@ -50,3 +56,6 @@ jobs:
         with:
           name: OpenWrt
           path: ./lede/bin
+        with:
+          name: Config
+          path: ./lede/.config
