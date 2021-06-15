@@ -14,3 +14,5 @@ jobs:
         run: |
           sudo df -h
           sudo fdisk -l
+          sudo ls /root
+          sudo ls /mnt
