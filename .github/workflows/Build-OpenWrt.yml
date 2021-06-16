@@ -17,6 +17,8 @@ jobs:
           mkdir -p /home/runner/.ssh/
           echo '${{ secrets.Private_Key }}' > /home/runner/.ssh/id_rsa
           echo '${{ secrets.PUBLIC_KEY }}' > /home/runner/.ssh/id_rsa.pub
+          chmod 600 /home/runner/.ssh/id_rsa
+          chmod 600 /home/runner/.ssh/id_rsa.pub
       - name: Delete Files
         run: |
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
