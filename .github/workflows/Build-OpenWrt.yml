@@ -1,15 +1,18 @@
 name: Build-OpenWrt
 
 on:
-  #push:
-  #  branches:
-  #    - OpenWrt
+  push:
+    branches:
+      - OpenWrt
 
 jobs:
   Self:
     name: Build Self OpenWrt
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps: 
+      - name: Delete Files
+        run: |
+          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
       - name: Check Space
         run: |
           df -h
