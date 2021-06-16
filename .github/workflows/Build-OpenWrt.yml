@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - OpenWrt
+    schedule:
+      - cron: '0 10 * * *'
 
 jobs:
   Self:
@@ -23,10 +25,15 @@ jobs:
       - name: Install Package
         run: |
           sudo apt-get install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync -y
+      - name: Add SSH Key
+        environment: Build
+        run: |
+          echo '$Public_Key' > /home/runner/.ssh/id_rsa
+          echo '$Private Key' > /home/runner/.ssh/id_rsa.pub
       - name: Clone Repositories
         run: |
           git clone https://github.com/coolsnowwolf/lede
-          git clone -b OpenWrt https://github.com/shoucandanghehe/Auto-Build/
+          git clone -b OpenWrt git@github.com:shoucandanghehe/Auto-Build.git
       - name: Replace File
         run: |
           cp -f ./Auto-Build/.config ./lede/
@@ -44,7 +51,8 @@ jobs:
         run: |
           cd ./lede
           make download -j8 V=s
-          find ./dl/ -size -1024c -exec rm -f {} \;
+          find dl -size -1024c -exec ls -l {} \;
+          find dl -size -1024c -exec rm -f {} \;
       - name: Check Space
         run: |
           df -h
@@ -52,6 +60,12 @@ jobs:
         run: |
           cd ./lede
           make -j$(($(nproc) + 1)) V=s
+      - name: Push Config
+        environment: Build
+        run: |
+          cp -f ./lede/.config ./Auto-Build/
+          cd ./Auto-Build/
+          git push
       - name: Upload OpenWrt
         uses: actions/upload-artifact@v2
         with:
