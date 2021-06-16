@@ -14,6 +14,8 @@ jobs:
     steps: 
       - name: Add SSH Key
         run: |
+          touch /home/runner/.ssh/id_rsa
+          touch /home/runner/.ssh/id_rsa.pub
           echo '${{ secrets.Private_Key }}' > /home/runner/.ssh/id_rsa
           echo '${{ secrets.PUBLIC_KEY }}' > /home/runner/.ssh/id_rsa.pub
       - name: Delete Files
