@@ -12,6 +12,10 @@ jobs:
     name: Build Self OpenWrt
     runs-on: ubuntu-latest
     steps: 
+      - name: Add SSH Key
+        run: |
+          echo '${{ secrets.Private_Key }}' > /home/runner/.ssh/id_rsa
+          echo '${{ secrets.PUBLIC_KEY }}' > /home/runner/.ssh/id_rsa.pub
       - name: Delete Files
         run: |
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
@@ -25,10 +29,6 @@ jobs:
       - name: Install Package
         run: |
           sudo apt-get install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync -y
-      - name: Add SSH Key
-        run: |
-          echo ${{ secrets.Private_Key }} > /home/runner/.ssh/id_rsa
-          echo ${{ secrets.PUBLIC_KEY }} > /home/runner/.ssh/id_rsa.pub
       - name: Clone Repositories
         run: |
           git clone https://github.com/coolsnowwolf/lede
