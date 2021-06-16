@@ -1,9 +1,9 @@
 name: test
 
-on:
-  push:
-    branches:
-      - OpenWrt
+#on:
+#  push:
+#    branches:
+#      - OpenWrt
 
 jobs:
   Self:
