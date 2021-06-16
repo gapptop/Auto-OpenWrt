@@ -60,7 +60,6 @@ jobs:
           cd ./lede
           make -j$(($(nproc) + 1)) V=s
       - name: Push Config
-        environment: Build
         run: |
           cp -f ./lede/.config ./Auto-Build/
           cd ./Auto-Build/
