@@ -79,9 +79,11 @@ jobs:
           path: ./lede/.config
       - name: Compress Firmware
         run: |
+          mkdir Firmware
+          cd ./Firmware
           7z a -t7z "`date '+%Y-%m-%d %H：%M：%S'` Build OpenWrt Firmware" -ms -mx=9 -mmt ./lede/bin/targets/x86/64/openwrt-x86-64-generic-*
       - name: Upload Firmware
         uses: actions/upload-artifact@v2
         with:
           name: Firmware
-          path: ./'*Build OpenWrt Firmware.7z'
+          path: ./Firmware/
