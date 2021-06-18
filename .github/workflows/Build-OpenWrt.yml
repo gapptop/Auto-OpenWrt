@@ -67,13 +67,21 @@ jobs:
           cp -f ./lede/.config ./Auto-Build/
           cd ./Auto-Build/
           git push
-      - name: Upload OpenWrt
+      - name: Upload All
         uses: actions/upload-artifact@v2
         with:
-          name: OpenWrt
+          name: All Build Products
           path: ./lede/bin
       - name: Upload Config
         uses: actions/upload-artifact@v2
         with:
           name: Config
           path: ./lede/.config
+      - name: Compress Firmware
+        run: |
+          7z a -t7z "`date '+%Y-%m-%d %H：%M：%S'` Build OpenWrt Firmware" -ms -mx=9 -mmt ./lede/bin/targets/x86/64/openwrt-x86-64-generic-*
+      - name: Upload Firmware
+        uses: actions/upload-artifact@v2
+        with:
+          name: Firmware
+          path: ./'*Build OpenWrt Firmware.7z'
