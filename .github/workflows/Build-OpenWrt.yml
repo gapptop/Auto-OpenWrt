@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - OpenWrt
-    schedule:
-      - cron: '0 10 * * *'
+  schedule:
+    - cron: '0 10 * * *'
 
 jobs:
   Self:
