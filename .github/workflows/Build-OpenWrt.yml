@@ -38,8 +38,10 @@ jobs:
           git clone -b OpenWrt git@github.com:shoucandanghehe/Auto-Build.git
       - name: Replace File
         run: |
-          mv -f ./Auto-Build/.config ./lede/
-          mv -f ./Auto-Build/feeds.conf.default ./lede/
+          touch ./lede/.config
+          touch ./lede/feeds.conf.default
+          cat ./Auto-Build/.config > ./lede/.config
+          cat ./Auto-Build/feeds.conf.default > ./lede/feeds.conf.default
       - name: Update Feeds
         run: |
           cd ./lede
@@ -51,6 +53,10 @@ jobs:
           make download -j8 V=s
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
+        - name: Create Config
+        run: |
+          cd ./lede
+          make defconfig
       - name: Check Space
         run: |
           df -h
