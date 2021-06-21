@@ -38,8 +38,8 @@ jobs:
           git clone -b OpenWrt git@github.com:shoucandanghehe/Auto-Build.git
       - name: Replace File
         run: |
-          cp -f ./Auto-Build/.config ./lede/
-          cp -f ./Auto-Build/feeds.conf.default ./lede/
+          mv -f ./Auto-Build/.config ./lede/
+          mv -f ./Auto-Build/feeds.conf.default ./lede/
       - name: Update Feeds
         run: |
           cd ./lede
