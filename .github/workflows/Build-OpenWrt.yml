@@ -53,7 +53,7 @@ jobs:
           make download -j8 V=s
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
-        - name: Create Config
+      - name: Create Config
         run: |
           cd ./lede
           make defconfig
