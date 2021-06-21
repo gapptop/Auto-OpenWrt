@@ -45,10 +45,6 @@ jobs:
           cd ./lede
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-      - name: Create Config
-        run: |
-          cd ./lede
-          make defconfig
       - name: Make Download
         run: |
           cd ./lede
