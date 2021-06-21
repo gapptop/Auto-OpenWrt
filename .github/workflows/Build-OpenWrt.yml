@@ -47,16 +47,16 @@ jobs:
           cd ./lede
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+      - name: Create Config
+        run: |
+          cd ./lede
+          make defconfig
       - name: Make Download
         run: |
           cd ./lede
           make download -j8 V=s
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
-      - name: Create Config
-        run: |
-          cd ./lede
-          make defconfig
       - name: Check Space
         run: |
           df -h
