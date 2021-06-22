@@ -36,10 +36,10 @@ jobs:
       - name: Clone Repositories
         run: |
           git clone https://github.com/coolsnowwolf/lede
-          git clone -b OpenWrt git@github.com:shoucandanghehe/Auto-Build.git
+          git clone git@github.com:shoucandanghehe/Auto-OpenWrt.git
       - name: Replace Feeds
         run: |
-          cat ./Auto-Build/feeds.conf.default > ./lede/feeds.conf.default
+          cat ./Auto-OpenWrt/feeds.conf.default > ./lede/feeds.conf.default
       - name: Update Feeds
         run: |
           cd ./lede
@@ -50,7 +50,7 @@ jobs:
           cd ./lede
           make defconfig
           cat .config
-          cat ../Auto-Build/.config > .config
+          cat ../Auto-OpenWrt/.config > .config
           make defconfig
           cat .config
       - name: Make Download
@@ -70,8 +70,8 @@ jobs:
         run: |
           cd ./lede
           ./scripts/diffconfig.sh > seed.config
-          cat seed.config > ../Auto-Build/.config
-          cd ../Auto-Build/
+          cat seed.config > ../Auto-OpenWrt/.config
+          cd ../Auto-OpenWrt/
           git push
       - name: Upload All
         uses: actions/upload-artifact@v2
