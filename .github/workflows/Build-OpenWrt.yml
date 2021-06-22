@@ -1,9 +1,7 @@
 name: Build-OpenWrt
 
 on:
-  push:
-    branches:
-      - OpenWrt
+  workflow_dispatch:
   schedule:
     - cron: '0 10 * * *'
 
