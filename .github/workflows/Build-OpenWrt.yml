@@ -37,11 +37,8 @@ jobs:
         run: |
           git clone https://github.com/coolsnowwolf/lede
           git clone -b OpenWrt git@github.com:shoucandanghehe/Auto-Build.git
-      - name: Replace File
+      - name: Replace Feeds
         run: |
-          touch ./lede/.config
-          touch ./lede/feeds.conf.default
-          cat ./Auto-Build/.config > ./lede/.config
           cat ./Auto-Build/feeds.conf.default > ./lede/feeds.conf.default
       - name: Update Feeds
         run: |
@@ -51,6 +48,9 @@ jobs:
       - name: Create Config
         run: |
           cd ./lede
+          make defconfig
+          cat .config
+          cat ../Auto-Build/.config > .config
           make defconfig
           cat .config
       - name: Make Download
