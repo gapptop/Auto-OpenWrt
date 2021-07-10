@@ -64,13 +64,6 @@ jobs:
         run: |
           cd ./lede
           make -j$(($(nproc) + 1)) V=s || make -j1 V=s
-      - name: Push Config
-        run: |
-          cd ./lede
-          ./scripts/diffconfig.sh > seed.config
-          cat seed.config > ../Auto-OpenWrt/.config
-          cd ../Auto-OpenWrt/
-          git push
       - name: Upload All
         uses: actions/upload-artifact@v2
         with:
@@ -93,3 +86,10 @@ jobs:
         with:
           name: Firmware
           path: ./Firmware/
+      - name: Push Config
+        run: |
+          cd ./lede
+          ./scripts/diffconfig.sh > seed.config
+          cat seed.config > ../Auto-OpenWrt/.config
+          cd ../Auto-OpenWrt/
+          git push
