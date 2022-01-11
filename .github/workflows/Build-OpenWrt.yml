@@ -18,8 +18,9 @@ jobs:
           submodules: 'recursive'
       - name: Delete Files
         run: |
+          cd
+          tree -d -L 3
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
-          tree
       - name: Check Space
         run: |
           df -h
