@@ -19,6 +19,7 @@ jobs:
       - name: Delete Files
         run: |
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          tree
       - name: Check Space
         run: |
           df -h
