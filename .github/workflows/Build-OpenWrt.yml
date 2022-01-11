@@ -13,8 +13,9 @@ jobs:
     steps: 
       - uses: actions/checkout@v2
       - uses: actions/checkout@v2
-        repository: 'https://github.com/coolsnowwolf/lede'
-        submodules: 'recursive'
+        with:
+          repository: 'https://github.com/coolsnowwolf/lede'
+          submodules: 'recursive'
       - name: Delete Files
         run: |
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
@@ -60,16 +61,16 @@ jobs:
           make -j$(($(nproc) + 1)) V=s || make -j1 V=s
       - name: Upload All
         uses: actions/upload-artifact@v2
-        with:
-          name: All Build Products
-          path: ./lede/bin
+          with:
+            name: All Build Products
+            path: ./lede/bin
       - name: Upload Config
         uses: actions/upload-artifact@v2
-        with:
-          name: Config
-          path: |
-            ./lede/.config
-            ./lede/seed.config
+          with:
+            name: Config
+            path: |
+              ./lede/.config
+              ./lede/seed.config
       - name: Compress Firmware
         run: |
           mkdir Firmware
@@ -77,9 +78,9 @@ jobs:
           7z a -t7z "`date '+%Y-%m-%d %H：%M：%S'` Build OpenWrt Firmware" -ms -mx=9 -mmt ../lede/bin/targets/x86/64/openwrt-x86-64-generic-*
       - name: Upload Firmware
         uses: actions/upload-artifact@v2
-        with:
-          name: Firmware
-          path: ./Firmware/
+          with:
+            name: Firmware
+            path: ./Firmware/
       - name: Generate Config
         run: |
           cd ./lede
@@ -87,6 +88,6 @@ jobs:
           cat seed.config > ../Auto-OpenWrt/.config
       - name: Push Config
         uses: EndBug/add-and-commit@v7.5.0
-        with:
-          cwd: ./Auto-OpenWrt
-          message: 'Update Config'
+          with:
+            cwd: ./Auto-OpenWrt
+            message: 'Update Config'
