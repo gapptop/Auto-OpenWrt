@@ -12,14 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v2
-      - uses: actions/checkout@v2
-        with:
-          repository: 'coolsnowwolf/lede'
-          submodules: 'recursive'
+      - name: Clone lede
+        run: |
+          git clone https://github.com/coolsnowwolf/lede --depth 1
       - name: Delete Files
         run: |
-          cd
-          tree -d -L 5
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
       - name: Check Space
         run: |
@@ -34,7 +31,7 @@ jobs:
           sudo apt-get install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync libtinfo5 mkisofs -y
       - name: Replace Feeds
         run: |
-          cat ./Auto-OpenWrt/feeds.conf.default > ./lede/feeds.conf.default
+          cat ./feeds.conf.default > ./lede/feeds.conf.default
       - name: Update Feeds
         run: |
           cd ./lede
@@ -45,7 +42,7 @@ jobs:
           cd ./lede
           make defconfig
           cat .config
-          cat ../Auto-OpenWrt/.config > .config
+          cat ../.config > .config
           make defconfig
           cat .config
       - name: Make Download
@@ -88,8 +85,10 @@ jobs:
           cd ./lede
           ./scripts/diffconfig.sh > seed.config
           cat seed.config > ../Auto-OpenWrt/.config
+          cd ..
+          rm -rf ./lede
       - name: Push Config
         uses: EndBug/add-and-commit@v7.5.0
         with:
-          cwd: ./Auto-OpenWrt
+          cwd: ./
           message: 'Update Config'
