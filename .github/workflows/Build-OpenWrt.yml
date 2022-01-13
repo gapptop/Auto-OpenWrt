@@ -84,7 +84,7 @@ jobs:
         run: |
           cd ./lede
           ./scripts/diffconfig.sh > seed.config
-          cat seed.config > ../Auto-OpenWrt/.config
+          cat seed.config > ../.config
           cd ..
           rm -rf ./lede
       - name: Push Config
