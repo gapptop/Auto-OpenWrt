@@ -87,6 +87,7 @@ jobs:
           cat seed.config > ../.config
           cd ..
           rm -rf ./lede
+          rm -rf ./Firmware
       - name: Push Config
         uses: EndBug/add-and-commit@v7.5.0
         with:
