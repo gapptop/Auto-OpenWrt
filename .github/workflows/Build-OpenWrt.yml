@@ -10,7 +10,7 @@ jobs:
   Build:
     name: Build OpenWrt
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - uses: actions/checkout@v2
       - name: Clone lede
         run: |
@@ -37,6 +37,7 @@ jobs:
           cd ./lede
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+          git clone https://github.com/1wrt/luci-app-ikoolproxy.git package/luci-app-ikoolproxy
       - name: Create Config
         run: |
           cd ./lede
