@@ -1,0 +1,87 @@
+name: Build-r2s
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * *'
+
+jobs:
+  Build:
+    name: Build r2s
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Clone lede
+        run: |
+          git clone https://github.com/coolsnowwolf/lede --depth 1
+      - name: Delete Files
+        run: |
+          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+      - name: Check Space
+        run: |
+          df -h
+      - name: Update Package
+        run: |
+          sudo apt-get autoremove -y
+          sudo apt-get update -y
+          sudo apt-get upgrade -y
+      - name: Install Package
+        run: |
+          sudo apt-get install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync libtinfo5 mkisofs -y
+      - name: Replace Feeds
+        run: |
+          cat ./feeds.conf.default > ./lede/feeds.conf.default
+      - name: Update Feeds
+        run: |
+          cd ./lede
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+      - name: Create Config
+        run: |
+          cd ./lede
+          make defconfig
+          cat ../r2s.config > .config
+          make defconfig
+      - name: Make Download
+        run: |
+          cd ./lede
+          cp ../.github/workflows/Download.sh .
+          chmod +x Download.sh
+          ./Download.sh
+      - name: Check Space
+        run: |
+          df -h
+      - name: Build
+        run: |
+          cd ./lede
+          make -j$(($(nproc) + 1)) V=s || make -j1 V=s
+      - name: Upload All
+        uses: actions/upload-artifact@v3
+        with:
+          name: All Build Products
+          path: ./lede/bin
+      - name: Upload Firmware
+        uses: actions/upload-artifact@v2
+        with:
+          name: Firmware
+          path: ./lede/bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r2s-*
+      - name: Generate Config
+        run: |
+          cd ./lede
+          ./scripts/diffconfig.sh > seed.config
+          cat seed.config > ../r2s.config
+      - name: Upload Config
+        uses: actions/upload-artifact@v2
+        with:
+          name: Config
+          path: |
+            ./lede/.config
+            ./lede/seed.config
+      - name: Delete Files
+        run: |
+          rm -rf ./lede
+      - name: Push Config
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'r2s.config'

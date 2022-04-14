@@ -1,4 +1,4 @@
-name: Build-OpenWrt
+name: Build-x86-64
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   Build:
-    name: Build OpenWrt
+    name: Build x86-64
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -37,21 +37,18 @@ jobs:
           cd ./lede
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          git clone https://github.com/1wrt/luci-app-ikoolproxy.git package/luci-app-ikoolproxy
       - name: Create Config
         run: |
           cd ./lede
           make defconfig
-          cat .config
-          cat ../.config > .config
+          cat ../x86-64.config > .config
           make defconfig
-          cat .config
       - name: Make Download
         run: |
           cd ./lede
-          make download -j8 V=s
-          find dl -size -1024c -exec ls -l {} \;
-          find dl -size -1024c -exec rm -f {} \;
+          cp ../.github/workflows/Download.sh .
+          chmod +x Download.sh
+          ./Download.sh
       - name: Check Space
         run: |
           df -h
@@ -60,10 +57,20 @@ jobs:
           cd ./lede
           make -j$(($(nproc) + 1)) V=s || make -j1 V=s
       - name: Upload All
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: All Build Products
           path: ./lede/bin
+      - name: Upload Firmware
+        uses: actions/upload-artifact@v2
+        with:
+          name: Firmware
+          path: ./lede/bin/targets/x86/64/openwrt-x86-64-generic-*
+      - name: Generate Config
+        run: |
+          cd ./lede
+          ./scripts/diffconfig.sh > seed.config
+          cat seed.config > ../x86-64.config
       - name: Upload Config
         uses: actions/upload-artifact@v2
         with:
@@ -71,26 +78,10 @@ jobs:
           path: |
             ./lede/.config
             ./lede/seed.config
-      - name: Compress Firmware
+      - name: Delete Files
         run: |
-          mkdir Firmware
-          cd ./Firmware
-          7z a -t7z "`date '+%Y-%m-%d %H：%M：%S'` Build OpenWrt Firmware" -ms -mx=9 -mmt ../lede/bin/targets/x86/64/openwrt-x86-64-generic-*
-      - name: Upload Firmware
-        uses: actions/upload-artifact@v2
-        with:
-          name: Firmware
-          path: ./Firmware/
-      - name: Generate Config
-        run: |
-          cd ./lede
-          ./scripts/diffconfig.sh > seed.config
-          cat seed.config > ../.config
-          cd ..
           rm -rf ./lede
-          rm -rf ./Firmware
       - name: Push Config
-        uses: EndBug/add-and-commit@v7.5.0
+        uses: EndBug/add-and-commit@v9
         with:
-          cwd: ./
-          message: 'Update Config'
+          add: 'x86-64.config'
