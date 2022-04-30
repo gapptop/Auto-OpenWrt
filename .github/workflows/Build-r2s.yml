@@ -14,7 +14,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Clone lede
         run: |
-          git clone https://github.com/coolsnowwolf/lede --depth 1
+          git clone https://github.com/coolsnowwolf/lede
+      - name: Cache
+        uses: klever1988/cachewrtbuild@main
+        with:
+          ccache: 'true'
       - name: Delete Files
         run: |
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
@@ -42,6 +46,8 @@ jobs:
           cd ./lede
           make defconfig
           cat ../r2s.config > .config
+          make defconfig
+          echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config
           make defconfig
       - name: Make Download
         run: |
