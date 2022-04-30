@@ -85,9 +85,6 @@ jobs:
           path: |
             ./lede/.config
             ./lede/seed.config
-      - name: Delete Files
-        run: |
-          rm -rf ./lede
       - name: Push Config
         uses: EndBug/add-and-commit@v9
         with:
