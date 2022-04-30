@@ -19,6 +19,7 @@ jobs:
         uses: klever1988/cachewrtbuild@main
         with:
           ccache: 'true'
+          prefix: ${{ github.workspace }}/lede
       - name: Delete Files
         run: |
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
