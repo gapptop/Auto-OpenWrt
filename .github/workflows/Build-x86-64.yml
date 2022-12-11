@@ -73,7 +73,7 @@ jobs:
           name: All Build Products
           path: ./lede/bin
       - name: Upload Firmware
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Firmware
           path: ./lede/bin/targets/x86/64/openwrt-x86-64-generic-*
@@ -83,7 +83,7 @@ jobs:
           ./scripts/diffconfig.sh > seed.config
           cat seed.config > ../x86-64.config
       - name: Upload Config
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Config
           path: |

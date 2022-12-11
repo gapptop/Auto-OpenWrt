@@ -73,7 +73,7 @@ jobs:
           name: All Build Products
           path: ./lede/bin
       - name: Upload Firmware
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Firmware
           path: ./lede/bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r2s-*
@@ -83,7 +83,7 @@ jobs:
           ./scripts/diffconfig.sh > seed.config
           cat seed.config > ../r2s.config
       - name: Upload Config
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Config
           path: |
